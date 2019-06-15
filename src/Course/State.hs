@@ -114,7 +114,7 @@ instance Monad (State s) where
 -- (Empty,8)
 findM :: Monad f => (a -> f Bool) -> List a -> f (Optional a)
 --findM f xs = foldRight (\a o -> let f' b = f a in (if b then f' a else o)) Empty xs
-findM = error = ""
+findM = error ""
 
 
 -- | Find the first element in a `List` that repeats.
