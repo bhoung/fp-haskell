@@ -23,24 +23,17 @@ import qualified Prelude as P
 -- >>> instance Arbitrary a => Arbitrary (List a) where arbitrary = P.fmap listh arbitrary
 
 -- | A `StateT` is a function from a state value `s` to a functor f of (a produced value `a`, and a resulting state `s`).
-newtype StateT s f a =
-  StateT {
-    runStateT ::
-      s
-      -> f (a, s)
-  }
+newtype StateT s f a = StateT { runStateT :: s -> f (a, s) }
 
 -- | Implement the `Functor` instance for @StateT s f@ given a @Functor f@.
 --
 -- >>> runStateT ((+1) <$> (pure 2) :: StateT Int List Int) 0
 -- [(3,0)]
 instance Functor f => Functor (StateT s f) where
-  (<$>) ::
-    (a -> b)
-    -> StateT s f a
-    -> StateT s f b
-  (<$>) =
-    error "todo: Course.StateT (<$>)#instance (StateT s f)"
+  (<$>) :: (a -> b) -> StateT s f a -> StateT s f b
+  (<$>) f StateT k = StateT (\s -> let f' (a, s') = k s
+                                   in f' (f a, s')) 
+
 
 -- | Implement the `Applicative` instance for @StateT s f@ given a @Monad f@.
 --
