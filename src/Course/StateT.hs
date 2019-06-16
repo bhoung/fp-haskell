@@ -31,8 +31,8 @@ newtype StateT s f a = StateT { runStateT :: s -> f (a, s) }
 -- [(3,0)]
 instance Functor f => Functor (StateT s f) where
   (<$>) :: (a -> b) -> StateT s f a -> StateT s f b
-  (<$>) f StateT k = StateT (\s -> let f' (a, s') = k s
-                                   in f' (f a, s')) 
+  (<$>) = error ""
+   -- StateT (\s -> let f' (a, s') = k s in f' (f a, s')) 
 
 
 -- | Implement the `Applicative` instance for @StateT s f@ given a @Monad f@.
