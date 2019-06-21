@@ -60,8 +60,8 @@ sequenceA tfa = traverse id tfa
 
 instance (Traversable f, Traversable g) =>
   Traversable (Compose f g) where
-  traverse :: (a -> h b) -> Compose f g a -> h (Compose f g b)
-  traverse f fga = let Compose (\f' -> (\g -> a) = fga in _todo <$> f a 
+  traverse :: Applicative h => (a -> h b) -> Compose f g a -> h (Compose f g b)
+  traverse f (Compose fga) = Compose <$> traverse (\ga -> traverse f ga) fga 
 
 -- | The `Product` data type contains one value from each of the two type constructors.
 data Product f g a = Product (f a) (g a)
@@ -69,7 +69,8 @@ data Product f g a = Product (f a) (g a)
 instance (Functor f, Functor g) =>
   Functor (Product f g) where
 -- Implement the (<$>) function for a Functor instance for Product
-  (<$>) = error "todo: Course.Traversable (<$>)#instance (Product f g)"
+  (<$>) :: (a -> b) -> Product f g a -> Product f g b
+  (<$>) f (Product fa ga) = Product (f <$> fa) (f <$> ga)
 
 instance (Traversable f, Traversable g) =>
   Traversable (Product f g) where

@@ -116,5 +116,4 @@ void fa = (\x ->()) <$> fa
 --
 -- >>> reverse <$> (putStr "hi" P.>> P.return ("abc" :: List Char))
 -- hi"cba"
-instance Functor IO where
-  (<$>) = P.fmap
+instance Functor IO where (<$>) = P.fmap
