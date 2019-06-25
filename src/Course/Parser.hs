@@ -130,13 +130,14 @@ valueParser a = P (\input -> Result input a)
 -- >>> parse (constantParser UnexpectedEof ||| valueParser 'v') "abc"
 -- Result >abc< 'v'
 (|||) :: Parser a -> Parser a -> Parser a
-(|||) = error ""
+(|||) pa pb = P (\input -> case isErrorResult $ (parse pa input) of
+                           True -> parse pb input
+                           False -> parse pa input)
 {--
-(|||) (P a) (P b) = let x = parse (P (\input -> a input)) in
-                    case isErrorResult x of
-                    True -> P (\input -> a input) 
-                    False -> P (\input -> b input)
---}
+(|||) pa pb = let x = (\input -> parse pa input) in
+                    case (\input -> isErrorResult x input) of
+                    True -> pa
+                    False -> pb --}
 infixl 3 |||
 
 -- | Parsers can bind.
