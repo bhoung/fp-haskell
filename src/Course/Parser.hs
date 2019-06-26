@@ -176,7 +176,10 @@ instance Applicative Parser where
   pure :: a -> Parser a
   pure = valueParser
   (<*>) :: Parser (a -> b) -> Parser a -> Parser b
-  (<*>) = error "todo: Course.Parser (<*>)#instance Parser"
+  (<*>) pf pa = pf >>= \f -> 
+                pa >>= \a -> pure (f a)
+  --  (<*>) pf pa = (\f -> f <$> pa) =<< pf 
+  --  (<*>) pf pa = (=<<) (\f -> (=<<) (\a -> valueParser (f a)) pa) pf
 
 -- | Return a parser that continues producing a list of values from the given parser.
 --
