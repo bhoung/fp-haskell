@@ -655,11 +655,8 @@ strconcat ::
 strconcat =
   P.concatMap hlist
 
-stringconcat ::
-  [P.String]
-  -> P.String
-stringconcat =
-  P.concat
+stringconcat :: [P.String] -> P.String
+stringconcat = P.concat
 
 show' ::
   Show a =>
