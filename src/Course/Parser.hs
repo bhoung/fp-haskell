@@ -367,10 +367,11 @@ ageParser = (\k -> case read k of Empty  -> constantParser (UnexpectedString k)
 -- >>> isErrorResult (parse firstNameParser "abc")
 -- True
 firstNameParser :: Parser Chars
-firstNameParser = (satisfy isUpper) >>= (\a -> 
-                  list(satisfy isLower) >>= (\b ->
+firstNameParser = upper >>= (\a -> 
+                  list(lower) >>= (\b ->
                   pure (a :. b)))
-
+-- using lift2
+-- lift2 (:.) (satisfy isUpper) (list(satisfy isLower))
 -- | Write a parser for Person.surname.
 --
 -- /Surname: string that starts with a capital letter and is followed by 5 or more lower-case letters./
@@ -388,10 +389,11 @@ firstNameParser = (satisfy isUpper) >>= (\a ->
 --
 -- >>> isErrorResult (parse surnameParser "abc")
 -- True
-surnameParser ::
-  Parser Chars
-surnameParser =
-  error "todo: Course.Parser#surnameParser"
+surnameParser :: Parser Chars
+surnameParser = upper >>= (\a ->
+                thisMany 5 lower >>= (\b ->
+                --list (lower) >>= (\c -> 
+                pure (a :. b )))
 
 -- | Write a parser for Person.smoker.
 --
