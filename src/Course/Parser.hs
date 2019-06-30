@@ -409,11 +409,14 @@ surnameParser = upper >>= (\a ->
 --
 -- >>> isErrorResult (parse smokerParser "abc")
 -- True
-smokerParser ::
-  Parser Bool
-smokerParser =
-  error "todo: Course.Parser#smokerParser"
 
+smokerParser :: Parser Bool
+smokerParser = is 'y' ||| is 'n' >>= \a ->
+               case a of 
+               'y' -> pure $ True
+               'n' -> pure $ False
+
+--
 -- | Write part of a parser for Person#phoneBody.
 -- This parser will only produce a string of digits, dots or hyphens.
 -- It will ignore the overall requirement of a phone number to
