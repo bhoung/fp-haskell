@@ -367,7 +367,9 @@ ageParser = (\k -> case read k of Empty  -> constantParser (UnexpectedString k)
 -- >>> isErrorResult (parse firstNameParser "abc")
 -- True
 firstNameParser :: Parser Chars
-firstNameParser = error "todo: Course.Parser#firstNameParser"
+firstNameParser = (satisfy isUpper) >>= (\a -> 
+                  list(satisfy isLower) >>= (\b ->
+                  pure (a :. b)))
 
 -- | Write a parser for Person.surname.
 --
