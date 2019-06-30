@@ -1,0 +1,777 @@
+Preprocessing library course-0.1.4...
+[24 of 27] Compiling Course.Parser    ( src/Course/Parser.hs, dist/build/Course/Parser.o )
+[27 of 27] Compiling Course           ( src/Course.hs, dist/build/Course.o ) [Course.Parser changed]
+In-place registering course-0.1.4...
+Preprocessing test suite 'tasty' for course-0.1.4...
+[ 9 of 14] Compiling Course.JsonParserTest ( test/Course/JsonParserTest.hs, dist/build/tasty/tasty-tmp/Course/JsonParserTest.o ) [Course.Parser changed]
+Linking dist/build/tasty/tasty ...
+Running 1 test suites...
+Test suite tasty: RUNNING...
+Tests
+  Optional
+    mapOptional
+      Empty:                                                                   OK
+      Full:                                                                    OK
+    bindOptional
+      Empty:                                                                   OK
+      even dec, odd inc, even input:                                           OK
+      even dec, odd inc, odd input:                                            OK
+    ??
+      Full:                                                                    OK
+      Empty:                                                                   OK
+    <+>
+      first Full:                                                              OK
+      both Full:                                                               OK
+      first Empty:                                                             OK
+      both empty:                                                              OK
+  List
+    headOr
+      headOr on non-empty list:                                                OK
+      headOr on empty list:                                                    OK
+      headOr on infinity always 0:                                             OK
+        +++ OK, passed 100 tests.
+      headOr on empty list always the default:                                 OK
+        +++ OK, passed 100 tests.
+    productTest
+      product of empty list:                                                   OK
+      product of 1..3:                                                         OK
+      product of 1..4:                                                         OK
+    sum
+      sum 1..3:                                                                OK
+      sum 1..4:                                                                OK
+      subtracting each element in a list from its sum is always 0:             OK
+        +++ OK, passed 100 tests.
+    length
+      length 1..3:                                                             OK
+      summing a list of 1s is equal to its length:                             OK
+        +++ OK, passed 100 tests.
+    map
+      add 10 on list:                                                          OK
+      headOr after map:                                                        OK
+        +++ OK, passed 100 tests.
+      map id is id:                                                            OK
+        +++ OK, passed 100 tests.
+    filter
+      filter even:                                                             OK
+      filter (const True) is identity (headOr):                                OK
+        +++ OK, passed 100 tests.
+      filter (const True) is identity:                                         OK
+        +++ OK, passed 100 tests.
+      filter (const False) is the empty list:                                  OK
+        +++ OK, passed 100 tests.
+    (++)
+      (1..6):                                                                  OK
+      append empty to infinite:                                                OK
+        +++ OK, passed 100 tests.
+      append anything to infinity:                                             OK
+        +++ OK, passed 100 tests.
+      associativity:                                                           OK
+        +++ OK, passed 100 tests.
+      append to empty list:                                                    OK
+        +++ OK, passed 100 tests.
+    flatten
+      (1..9):                                                                  OK
+      flatten (infinity :. y):                                                 OK
+        +++ OK, passed 100 tests.
+      flatten (y :. infinity):                                                 OK
+        +++ OK, passed 100 tests.
+      sum of lengths == length of flattened:                                   OK (0.02s)
+        +++ OK, passed 100 tests.
+    flatMap
+      lists of Integer:                                                        OK
+      flatMap id flattens a list of lists:                                     OK
+        +++ OK, passed 100 tests.
+      flatMap id on a list of lists take 2:                                    OK
+        +++ OK, passed 100 tests.
+      flatMap id == flatten:                                                   OK (0.08s)
+        +++ OK, passed 100 tests.
+    flattenAgain
+      lists of Integer:                                                        OK (0.08s)
+        +++ OK, passed 100 tests.
+    seqOptional
+      all Full:                                                                OK
+      empty list:                                                              OK
+      contains Empty:                                                          OK
+      Empty at head of infinity:                                               OK
+    find
+      find no matches:                                                         OK
+      empty list:                                                              OK
+      find only even:                                                          OK
+      find first, not second even:                                             OK
+      find on infinite list:                                                   OK
+    lengthGT4
+      list of length 3:                                                        OK
+      empty list:                                                              OK
+      list of length 5:                                                        OK
+      infinite list:                                                           OK
+    reverse
+      empty list:                                                              OK
+      reverse . reverse on largeList:                                          OK
+      reverse then append is same as append then reverse:                      OK
+        +++ OK, passed 100 tests.
+      :                                                                        OK
+        +++ OK, passed 100 tests.
+    produce
+      increment:                                                               OK
+      double:                                                                  OK
+  Functor
+    ExactlyOne:                                                                OK
+    List
+      empty list:                                                              OK
+      increment:                                                               OK
+    Optional
+      Empty:                                                                   OK
+      Full:                                                                    OK
+    (->):                                                                      OK
+    (<$)
+      Map 7:                                                                   OK
+      Always maps a constant value over List:                                  OK
+        +++ OK, passed 100 tests.
+      Always maps a constant value over Full (Optional):                       OK
+        +++ OK, passed 100 tests.
+    void
+      List:                                                                    OK
+      Full:                                                                    OK
+      Empty:                                                                   OK
+      (->):                                                                    OK
+  Applicative
+    ExactlyOne instance
+      pure == ExactlyOne:                                                      OK
+        +++ OK, passed 100 tests.
+      Applying within ExactlyOne:                                              OK
+    List instance
+      pure:                                                                    OK
+        +++ OK, passed 100 tests.
+      <*>:                                                                     OK
+    lift1
+      ExactlyOne:                                                              OK
+      empty List:                                                              OK
+      List:                                                                    OK
+    Optional instance
+      pure:                                                                    OK
+        +++ OK, passed 100 tests.
+      Full <*> Full:                                                           OK
+      Empty <*> Full:                                                          OK
+      Full <*> Empty:                                                          OK
+    Function instance
+      addition:                                                                OK
+      more addition:                                                           OK
+      even more addition:                                                      OK
+      addition and multiplication:                                             OK
+      more addition and multiplcation:                                         OK
+      pure:                                                                    OK
+        +++ OK, passed 100 tests.
+    lift2
+      + over ExactlyOne:                                                       OK
+      + over List:                                                             OK
+      + over Optional - all full:                                              OK
+      + over Optional - first Empty:                                           OK
+      + over Optional - second Empty:                                          OK
+      + over functions:                                                        OK
+    lift3
+      + over ExactlyOne:                                                       OK
+      + over List:                                                             OK
+      + over Optional:                                                         OK
+      + over Optional - third Empty:                                           OK
+      + over Optional - first Empty:                                           OK
+      + over Optional - first and second Empty:                                OK
+      + over functions:                                                        OK
+    lift4
+      + over ExactlyOne:                                                       OK
+      + over List:                                                             OK
+      + over Optional:                                                         OK
+      + over Optional - third Empty:                                           OK
+      + over Optional - first Empty:                                           OK
+      + over Optional - first and second Empty:                                OK
+      + over functions:                                                        OK
+    rightApply
+      *> over List:                                                            OK
+      *> over List:                                                            OK
+      another *> over List:                                                    OK
+      *> over Optional:                                                        OK
+      *> over List property:                                                   OK
+        +++ OK, passed 100 tests.
+      *> over Optional property:                                               OK
+        +++ OK, passed 100 tests.
+    leftApply
+      <* over List:                                                            OK
+      another <* over List:                                                    OK
+      Yet another <* over List:                                                OK
+      <* over Optional:                                                        OK
+      <* over List property:                                                   OK
+        +++ OK, passed 100 tests.
+      <* over Optional property:                                               OK
+        +++ OK, passed 100 tests.
+    sequence
+      ExactlyOne:                                                              OK
+      List:                                                                    OK
+      Optional with an empty:                                                  OK
+      Optional:                                                                OK
+      (->):                                                                    OK
+    replicateA
+      ExactlyOne:                                                              OK
+      Optional - Full:                                                         OK
+      Optional - Empty:                                                        OK
+      (->):                                                                    OK
+      List:                                                                    OK
+    filtering
+      ExactlyOne:                                                              OK
+      Optional - all true:                                                     OK
+      Optional - some false:                                                   OK
+      Optional - some empty:                                                   OK
+      (->):                                                                    OK
+      List:                                                                    OK
+  Monad
+    (=<<) for ExactlyOne:                                                      OK
+    (=<<) for List:                                                            OK
+    (=<<) for Optional:                                                        OK
+    (=<<) for (->):                                                            OK
+    <**>
+      ExactlyOne:                                                              OK
+      List:                                                                    OK
+      Optional:                                                                OK
+      Optional - empty function:                                               OK
+      Optional - empty value:                                                  OK
+      (->) 1:                                                                  OK
+      (->) 2:                                                                  OK
+      (->) 3:                                                                  OK
+      (->) 4:                                                                  OK
+      (->) 5:                                                                  OK
+    join
+      List:                                                                    OK
+      Optional with Empty:                                                     OK
+      Optional all Full:                                                       OK
+      (->):                                                                    OK
+    (>>=):                                                                     OK
+    kleislyComposition:                                                        OK
+  State
+    exec:                                                                      OK
+      +++ OK, passed 100 tests.
+    eval:                                                                      OK
+      +++ OK, passed 100 tests.
+    get:                                                                       OK
+    put:                                                                       OK
+    (<$>):                                                                     OK
+    Applicative
+      pure:                                                                    OK
+      <*>:                                                                     OK
+      complicated <*>:                                                         OK
+    Monad
+      (=<<):                                                                   OK
+      (>>=):                                                                   OK
+    findM
+      find 'c' in 'a'..'h':                                                    FAIL
+        Exception: 
+      find 'i' in 'a'..'h':                                                    FAIL
+        Exception: 
+    firstRepeat
+      finds repeats:                                                           FAIL
+        *** Failed! Exception: 'todo: Course.State#firstRepeat' (after 1 test):
+        []
+        Use --quickcheck-replay=986041 to reproduce.
+      :                                                                        FAIL
+        *** Failed! Exception: 'todo: Course.State#firstRepeat' (after 1 test):
+        []
+        Use --quickcheck-replay=875251 to reproduce.
+    distinct
+      No repeats after distinct:                                               FAIL
+        *** Failed! Exception: 'todo: Course.State#firstRepeat' (after 1 test):
+        []
+        Use --quickcheck-replay=355526 to reproduce.
+      :                                                                        FAIL
+        *** Failed! Exception: 'todo: Course.State#distinct' (after 1 test):
+        []
+        Use --quickcheck-replay=379227 to reproduce.
+    isHappy
+      4:                                                                       FAIL
+        Exception: todo: Course.State#isHappy
+      7:                                                                       FAIL
+        Exception: todo: Course.State#isHappy
+      42:                                                                      FAIL
+        Exception: todo: Course.State#isHappy
+      44:                                                                      FAIL
+        Exception: todo: Course.State#isHappy
+  StateT
+    <$>:                                                                       FAIL
+      Exception: 
+    Applicative
+      List (pure):                                                             FAIL
+        Exception: todo: Course.StateT pure#instance (StateT s f)
+      List (<*>):                                                              FAIL
+        Exception: todo: Course.StateT (<*>)#instance (StateT s f)
+      Optional:                                                                FAIL
+        Exception: todo: Course.StateT (<*>)#instance (StateT s f)
+      List:                                                                    FAIL
+        Exception: todo: Course.StateT (<*>)#instance (StateT s f)
+    Monad
+      bind const:                                                              FAIL
+        Exception: todo: Course.StateT (=<<)#instance (StateT s f)
+      modify:                                                                  FAIL
+        Exception: todo: Course.StateT (=<<)#instance (StateT s f)
+    state':                                                                    FAIL
+      Exception: todo: Course.StateT#state'
+    runState':                                                                 FAIL
+      Exception: todo: Course.StateT#runState'
+    getTTest:                                                                  FAIL
+      Exception: todo: Course.StateT#getT
+    putTTest:                                                                  FAIL
+      Exception: todo: Course.StateT#putT
+    distinct':                                                                 FAIL
+      *** Failed! Exception: 'todo: Course.StateT#distinct'' (after 1 test):
+      []
+      Use --quickcheck-replay=274538 to reproduce.
+    distinctF
+      Full case:                                                               FAIL
+        Exception: todo: Course.StateT#distinctF
+      Empty case:                                                              FAIL
+        Exception: todo: Course.StateT#distinctF
+    (<$>) for OptionalT:                                                       FAIL
+      Exception: todo: Course.StateT (<$>)#instance (OptionalT f)
+    (<*>) for OptionalT:                                                       FAIL
+      Exception: todo: Course.StateT (<*>)#instance (OptionalT f)
+    (=<<) for OptionalT:                                                       FAIL
+      Exception: todo: Course.StateT (=<<)#instance (OptionalT f)
+    (<$>) for Logger:                                                          FAIL
+      Exception: todo: Course.StateT (<$>)#instance (Logger l)
+    Logger Applicative
+      pure:                                                                    FAIL
+        Exception: todo: Course.StateT pure#instance (Logger l)
+      <*>:                                                                     FAIL
+        Exception: todo: Course.StateT (<*>)#instance (Logger l)
+    (=<<) for Logger:                                                          FAIL
+      Exception: todo: Course.StateT (=<<)#instance (Logger l)
+    log1:                                                                      FAIL
+      Exception: todo: Course.StateT#log1
+    distinctG
+      Full case:                                                               FAIL
+        Exception: todo: Course.StateT#distinctG
+      Empty case:                                                              FAIL
+        Exception: todo: Course.StateT#distinctG
+  Validation
+    isError
+      true for errors:                                                         OK
+      false for values:                                                        OK
+      not the same as isValue:                                                 OK
+        +++ OK, passed 100 tests.
+    isValue
+      false for errors:                                                        OK
+      false for values:                                                        OK
+      not the same as isValue:                                                 OK
+        +++ OK, passed 100 tests.
+    mapValidation
+      errors unchanged:                                                        OK
+      values changed:                                                          OK
+      map with id causes no change:                                            OK
+        +++ OK, passed 100 tests.
+    bindValidation
+      error unchanged:                                                         OK
+      odd value:                                                               OK
+      even value:                                                              OK
+      bind with Value causes no change:                                        OK
+        +++ OK, passed 100 tests.
+    valueOr
+      falls through for errors:                                                OK
+      unwraps values:                                                          OK
+      isValue or valueOr falls through:                                        OK
+        +++ OK, passed 100 tests.
+    errorOr
+      unwraps errors:                                                          OK
+      falls through for values:                                                OK
+      isError or errorOr falls through:                                        OK
+        +++ OK, passed 100 tests.
+  Extend
+    ExactlyOne instance:                                                       FAIL
+      Exception: todo: Course.Extend (<<=)#instance ExactlyOne
+    List
+      length:                                                                  FAIL
+        Exception: todo: Course.Extend (<<=)#instance List
+      id:                                                                      FAIL
+        Exception: todo: Course.Extend (<<=)#instance List
+      reverse:                                                                 FAIL
+        Exception: todo: Course.Extend (<<=)#instance List
+    Optional
+      id Full:                                                                 FAIL
+        Exception: todo: Course.Extend (<<=)#instance Optional
+      id Empty:                                                                FAIL
+        Exception: todo: Course.Extend (<<=)#instance Optional
+    cojoin
+      ExactlyOne:                                                              FAIL
+        Exception: todo: Course.Extend#cojoin
+      List:                                                                    FAIL
+        Exception: todo: Course.Extend#cojoin
+      Full:                                                                    FAIL
+        Exception: todo: Course.Extend#cojoin
+      Empty:                                                                   FAIL
+        Exception: todo: Course.Extend#cojoin
+  Comonad
+    ExactlyOne:                                                                FAIL
+      Exception: todo: Course.Comonad copure#instance ExactlyOne
+    <$$>:                                                                      FAIL
+      Exception: todo: Course.Comonad#(<$>)
+  ListZipper
+    ListZipper (<$>):                                                          FAIL
+      Exception: todo: Course.ListZipper (<$>)#instance ListZipper
+    MaybeListZipper (<$>):                                                     FAIL
+      Exception: todo: Course.ListZipper (<$>)#instance MaybeListZipper
+    toList
+      Optional empty list:                                                     OK
+      empty left:                                                              FAIL
+        Exception: todo: Course.ListZipper#toList
+      lefts and rights:                                                        FAIL
+        Exception: todo: Course.ListZipper#toList
+    fromList
+      non-empty:                                                               FAIL
+        Exception: todo: Course.ListZipper#fromList
+      empty:                                                                   FAIL
+        Exception: todo: Course.ListZipper#fromList
+      round trip:                                                              FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#fromList' (after 1 test):
+        []
+        Use --quickcheck-replay=872365 to reproduce.
+    toOptional
+      empty:                                                                   FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#toOptional' (after 1 test):
+        []
+        Use --quickcheck-replay=473907 to reproduce.
+    withFocus
+      empty left:                                                              FAIL
+        Exception: todo: Course.ListZipper#withFocus
+      left and right:                                                          FAIL
+        Exception: todo: Course.ListZipper#withFocus
+    setFocus
+      empty left:                                                              FAIL
+        Exception: todo: Course.ListZipper#setFocus
+      left and right:                                                          FAIL
+        Exception: todo: Course.ListZipper#setFocus
+    hasLeft
+      left and right:                                                          FAIL
+        Exception: todo: Course.ListZipper#hasLeft
+      empty left:                                                              FAIL
+        Exception: todo: Course.ListZipper#hasLeft
+    hasRight
+      left and right:                                                          FAIL
+        Exception: todo: Course.ListZipper#hasRight
+      empty right:                                                             FAIL
+        Exception: todo: Course.ListZipper#hasRight
+    findLeft
+      missing element returns IsNotZ:                                          FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#fromList' (after 1 test):
+        ([],True)
+        Use --quickcheck-replay=511179 to reproduce.
+      found in left:                                                           FAIL
+        Exception: todo: Course.ListZipper#findLeft
+      not found:                                                               FAIL
+        Exception: todo: Course.ListZipper#findLeft
+      one match in left:                                                       FAIL
+        Exception: todo: Course.ListZipper#findLeft
+      multiple matches in left:                                                FAIL
+        Exception: todo: Course.ListZipper#findLeft
+      elements shifted to right correctly:                                     FAIL
+        Exception: todo: Course.ListZipper#findLeft
+    findRight
+      missing element returns IsNotZ:                                          FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#fromList' (after 1 test):
+        []
+        Use --quickcheck-replay=262952 to reproduce.
+      found in right:                                                          FAIL
+        Exception: todo: Course.ListZipper#findRight
+      not found:                                                               FAIL
+        Exception: todo: Course.ListZipper#findRight
+      one match in right:                                                      FAIL
+        Exception: todo: Course.ListZipper#findRight
+      multiple matches in right:                                               FAIL
+        Exception: todo: Course.ListZipper#findRight
+    moveLeftLoop
+      with left:                                                               FAIL
+        Exception: todo: Course.ListZipper#moveLeftLoop
+      empty left:                                                              FAIL
+        Exception: todo: Course.ListZipper#moveLeftLoop
+    moveRightLoop
+      with right:                                                              FAIL
+        Exception: todo: Course.ListZipper#moveRightLoop
+      empty right:                                                             FAIL
+        Exception: todo: Course.ListZipper#moveRightLoop
+    moveLeft
+      with left:                                                               FAIL
+        Exception: todo: Course.ListZipper#moveLeft
+      empty left:                                                              FAIL
+        Exception: todo: Course.ListZipper#moveLeft
+    moveRight
+      with right:                                                              FAIL
+        Exception: todo: Course.ListZipper#moveRight
+      empty right:                                                             FAIL
+        Exception: todo: Course.ListZipper#moveRight
+    swapLeft
+      with left:                                                               FAIL
+        Exception: todo: Course.ListZipper#swapLeft
+      empty left:                                                              FAIL
+        Exception: todo: Course.ListZipper#swapLeft
+    swapRight
+      with right:                                                              FAIL
+        Exception: todo: Course.ListZipper#swapRight
+      empty right:                                                             FAIL
+        Exception: todo: Course.ListZipper#swapRight
+    dropLeft
+      with left:                                                               FAIL
+        Exception: todo: Course.ListZipper#dropLefts
+      empty left:                                                              FAIL
+        Exception: todo: Course.ListZipper#dropLefts
+      dropLefts empties left of zipper:                                        FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#dropLefts' (after 1 test):
+        []
+        0
+        []
+        Use --quickcheck-replay=634393 to reproduce.
+    dropRights
+      with right:                                                              FAIL
+        Exception: todo: Course.ListZipper#dropRights
+      empty right:                                                             FAIL
+        Exception: todo: Course.ListZipper#dropRights
+      dropRights empties right of zipper:                                      FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#dropRights' (after 1 test):
+        []
+        0
+        []
+        Use --quickcheck-replay=95837 to reproduce.
+    moveLeftN
+      positive moves:                                                          FAIL
+        Exception: todo: Course.ListZipper#moveLeftN
+      negative moves:                                                          FAIL
+        Exception: todo: Course.ListZipper#moveLeftN
+    moveRightN
+      positive moves:                                                          FAIL
+        Exception: todo: Course.ListZipper#moveRightN
+      negative moves:                                                          FAIL
+        Exception: todo: Course.ListZipper#moveRightN
+    moveLeftN'
+      positive - out of bounds both sides:                                     FAIL
+        Exception: todo: Course.ListZipper#moveLeftN'
+      positive in range:                                                       FAIL
+        Exception: todo: Course.ListZipper#moveLeftN'
+      moving zero is `Right . id`:                                             FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#moveLeftN'' (after 1 test):
+        []
+        0
+        []
+        Use --quickcheck-replay=201577 to reproduce.
+      negative in range:                                                       FAIL
+        Exception: todo: Course.ListZipper#moveLeftN'
+      negative out of bounds:                                                  FAIL
+        Exception: todo: Course.ListZipper#moveLeftN'
+      positive - out of bounds on left only:                                   FAIL
+        Exception: todo: Course.ListZipper#moveLeftN'
+      negative - out of bounds on right only:                                  FAIL
+        Exception: todo: Course.ListZipper#moveLeftN'
+    moveRightN'
+      positive - out of bounds both sides:                                     FAIL
+        Exception: todo: Course.ListZipper#moveRightN'
+      positive in range:                                                       FAIL
+        Exception: todo: Course.ListZipper#moveRightN'
+      moving zero is `Right . id`:                                             FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#moveRightN'' (after 1 test):
+        []
+        0
+        []
+        Use --quickcheck-replay=505941 to reproduce.
+      negative in range:                                                       FAIL
+        Exception: todo: Course.ListZipper#moveRightN'
+      negative - out of bounds both sides:                                     FAIL
+        Exception: todo: Course.ListZipper#moveRightN'
+    nth
+      have 1:                                                                  FAIL
+        Exception: todo: Course.ListZipper#nth
+      have 5:                                                                  FAIL
+        Exception: todo: Course.ListZipper#nth
+      missing 8:                                                               FAIL
+        Exception: todo: Course.ListZipper#nth
+    index
+      index works:                                                             FAIL
+        Exception: todo: Course.ListZipper#index
+      Always returns the index on a valid zipper:                              FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#toOptional' (after 1 test):
+        ([] >0< [],0)
+        Use --quickcheck-replay=181204 to reproduce.
+    end
+      end:                                                                     FAIL
+        Exception: todo: Course.ListZipper#end
+      end never changes the zipper's contents:                                 FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#toList' (after 1 test):
+        [] >0< []
+        Use --quickcheck-replay=203549 to reproduce.
+      never have rights after calling end:                                     FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#end' (after 1 test):
+        [] >0< []
+        Use --quickcheck-replay=607277 to reproduce.
+    start
+      start:                                                                   FAIL
+        Exception: todo: Course.ListZipper#start
+      start never changes the zipper's contents:                               FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#toList' (after 1 test):
+        [] >0< []
+        Use --quickcheck-replay=611712 to reproduce.
+      never have lefts after calling start:                                    FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#start' (after 1 test):
+        [] >0< []
+        Use --quickcheck-replay=514782 to reproduce.
+    deletePullLeft
+      non-empty lefts:                                                         FAIL
+        Exception: todo: Course.ListZipper#deletePullLeft
+      empty lefts:                                                             FAIL
+        Exception: todo: Course.ListZipper#deletePullLeft
+    deletePullRight
+      non-empty rights:                                                        FAIL
+        Exception: todo: Course.ListZipper#deletePullRight
+      empty rights:                                                            FAIL
+        Exception: todo: Course.ListZipper#deletePullRight
+    insertPushLeft
+      non-empty lefts:                                                         FAIL
+        Exception: todo: Course.ListZipper#insertPushLeft
+      empty lefts:                                                             FAIL
+        Exception: todo: Course.ListZipper#insertPushLeft
+      deletePullLeft . insertPushLeft == id:                                   FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#toOptional' (after 1 test):
+        ([] >0< [],0)
+        Use --quickcheck-replay=831205 to reproduce.
+    insertPushRight
+      non-empty rights:                                                        FAIL
+        Exception: todo: Course.ListZipper#insertPushRight
+      empty rights:                                                            FAIL
+        Exception: todo: Course.ListZipper#insertPushRight
+      deletePullRight . insertPushRight == id:                                 FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper#toOptional' (after 1 test):
+        ([] >0< [],0)
+        Use --quickcheck-replay=336220 to reproduce.
+    Applicative
+      pure produces infinite lefts:                                            FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper pure#instance ListZipper' (after 3 tests):
+        0
+        1
+        Use --quickcheck-replay=210190 to reproduce.
+      pure produces infinite rights:                                           FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper pure#instance ListZipper' (after 2 tests and 1 shrink):
+        0
+        1
+        Use --quickcheck-replay=774572 to reproduce.
+      <*> applies functions to corresponding elements in zipper:               FAIL
+        Exception: todo: Course.ListZipper (<*>)#instance ListZipper
+    Applicative (MaybeListZipper)
+      pure produces infinite lefts:                                            FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper pure#instance MaybeListZipper' (after 2 tests):
+        0
+        1
+        Use --quickcheck-replay=161494 to reproduce.
+      pure produces infinite rights:                                           FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper pure#instance MaybeListZipper' (after 2 tests and 1 shrink):
+        0
+        1
+        Use --quickcheck-replay=687498 to reproduce.
+      IsZ <*> IsZ:                                                             FAIL
+        Exception: todo: Course.ListZipper (<*>)#instance MaybeListZipper
+      IsNotZ <*> IsZ:                                                          FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper (<*>)#instance MaybeListZipper' (after 1 test):
+        [] >0< []
+        Use --quickcheck-replay=900937 to reproduce.
+      IsZ <*> IsNotZ:                                                          FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper (<*>)#instance MaybeListZipper' (after 1 test and 3 shrinks):
+        {_->0}
+        Use --quickcheck-replay=346812 to reproduce.
+      IsNotZ <*> IsNotZ:                                                       FAIL
+        Exception: todo: Course.ListZipper (<*>)#instance MaybeListZipper
+    Extend
+      zipper o' zippers:                                                       FAIL
+        Exception: todo: Course.ListZipper (<<=)#instance ListZipper
+    Extend (MaybeListZipper)
+      IsNotZ:                                                                  FAIL
+        Exception: todo: Course.ListZipper (<<=)#instance MaybeListZipper
+      IsZ:                                                                     FAIL
+        Exception: todo: Course.ListZipper (<<=)#instance MaybeListZipper
+    Comonad
+      copure:                                                                  FAIL
+        Exception: todo: Course.ListZipper copure#instance ListZipper
+    Traversable
+      All Full:                                                                FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper traverse#instance ListZipper' (after 1 test):
+        [] >0< []
+        Use --quickcheck-replay=749225 to reproduce.
+      One Empty:                                                               FAIL
+        Exception: todo: Course.ListZipper traverse#instance ListZipper
+    Traversable (MaybeListZipper)
+      IsNotZ:                                                                  FAIL
+        Exception: todo: Course.ListZipper traverse#instance MaybeListZipper
+      IsZ Full:                                                                FAIL
+        *** Failed! Exception: 'todo: Course.ListZipper traverse#instance MaybeListZipper' (after 1 test):
+        [] >0< []
+        Use --quickcheck-replay=792934 to reproduce.
+  JsonParser
+    jsonString
+      parse whole ASCII input:                                                 FAIL
+        Exception: todo: Course.JsonParser#jsonString
+      parse only the first string of input:                                    FAIL
+        Exception: todo: Course.JsonParser#jsonString
+      parse back slash (\):                                                    FAIL
+        Exception: todo: Course.JsonParser#jsonString
+      parse unicode (\u00abc):                                                 FAIL
+        Exception: todo: Course.JsonParser#jsonString
+      parse unicode (\u00ff):                                                  FAIL
+        Exception: todo: Course.JsonParser#jsonString
+      parse unicode (\u00fa):                                                  FAIL
+        Exception: todo: Course.JsonParser#jsonString
+      parsing string without quotes is an error:                               FAIL
+        Exception: todo: Course.JsonParser#jsonString
+      parsing string containing \a is an error - \a isn't a special character: FAIL
+        Exception: todo: Course.JsonParser#jsonString
+    jsonNumber
+      positive whole:                                                          FAIL
+        Exception: todo: Course.JsonParser#jsonNumber
+      negative whole:                                                          FAIL
+        Exception: todo: Course.JsonParser#jsonNumber
+      positive decimal:                                                        FAIL
+        Exception: todo: Course.JsonParser#jsonNumber
+      negative whole (2):                                                      FAIL
+        Exception: todo: Course.JsonParser#jsonNumber
+      negative decimal:                                                        FAIL
+        Exception: todo: Course.JsonParser#jsonNumber
+      negative sign on its own is error:                                       FAIL
+        Exception: todo: Course.JsonParser#jsonNumber
+      alphabetic characters is error:                                          FAIL
+        Exception: todo: Course.JsonParser#jsonNumber
+    jsonTrue
+      parses true:                                                             FAIL
+        Exception: todo: Course.JsonParser#jsonTrue
+      TRUE (caps) is an error:                                                 FAIL
+        Exception: todo: Course.JsonParser#jsonTrue
+    jsonFalse
+      parses false:                                                            FAIL
+        Exception: todo: Course.JsonParser#jsonFalse
+      FALSE (caps) is an error:                                                FAIL
+        Exception: todo: Course.JsonParser#jsonFalse
+    jsonNull
+      parses null:                                                             FAIL
+        Exception: todo: Course.JsonParser#jsonNull
+      NULL (caps) is an error:                                                 FAIL
+        Exception: todo: Course.JsonParser#jsonNull
+    jsonArray
+      []:                                                                      FAIL
+        Exception: todo: Course.JsonParser#jsonArray
+      [true]:                                                                  FAIL
+        Exception: todo: Course.JsonParser#jsonArray
+      [true, "abc"]:                                                           FAIL
+        Exception: todo: Course.JsonParser#jsonArray
+      [true, "abc", []]:                                                       FAIL
+        Exception: todo: Course.JsonParser#jsonArray
+      [true, "abc", [false]]:                                                  FAIL
+        Exception: todo: Course.JsonParser#jsonArray
+    jsonObject
+      empty:                                                                   FAIL
+        Exception: todo: Course.JsonParser#jsonObject
+      one key:                                                                 FAIL
+        Exception: todo: Course.JsonParser#jsonObject
+      two keys:                                                                FAIL
+        Exception: todo: Course.JsonParser#jsonObject
+      two keys and left over input:                                            FAIL
+        Exception: todo: Course.JsonParser#jsonObject
+
+175 out of 366 tests failed (0.31s)
+Test suite tasty: FAIL
+Test suite logged to: dist/test/course-0.1.4-tasty.log
+0 of 1 test suites (0 of 1 test cases) passed.

@@ -392,8 +392,8 @@ firstNameParser = upper >>= (\a ->
 surnameParser :: Parser Chars
 surnameParser = upper >>= (\a ->
                 thisMany 5 lower >>= (\b ->
-                --list (lower) >>= (\c -> 
-                pure (a :. b )))
+                list(lower) >>= (\c -> 
+                pure (a :. b ++ c))))
 
 -- | Write a parser for Person.smoker.
 --
