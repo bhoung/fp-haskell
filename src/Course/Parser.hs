@@ -338,7 +338,7 @@ sequenceParser = foldRight (lift2 (:.)) (pure Nil)
 -- >>> isErrorResult (parse (thisMany 4 upper) "ABcDef")
 -- True
 thisMany :: Int -> Parser a -> Parser (List a)
-thisMany = error "todo: Course.Parser#thisMany"
+thisMany k pa = sequenceParser (replicate k $ pa)
 
 -- | This one is done for you.
 --

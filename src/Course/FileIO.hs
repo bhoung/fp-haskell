@@ -184,5 +184,6 @@ getFile8 name =
 getFile9 :: FilePath -> IO (FilePath, Chars)
 getFile9 name = readFile name >>= pure . ((,) name)
 
+tmp_file :: Chars
 tmp_file = "C:/cygwin64/home/brendan/tmp.txt"
 
