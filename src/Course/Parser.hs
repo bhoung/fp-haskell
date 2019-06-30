@@ -509,10 +509,14 @@ phoneParser = digit >>= \a ->
 --
 -- >>> parse personParser "123  Fred   Clarkson    y     123-456.789#"
 -- Result >< Person 123 "Fred" "Clarkson" True "123-456.789"
-personParser ::
-  Parser Person
-personParser =
-  error "todo: Course.Parser#personParser"
+personParser :: Parser Person
+personParser = ageParser >>=~ \a ->
+               firstNameParser >>=~ \b -> 
+               surnameParser >>=~ \c ->
+               smokerParser >>=~ \d ->
+               phoneParser >>= \e ->
+               pure (Person a b c d e)
+                  
 
 -- Make sure all the tests pass!
 
@@ -520,22 +524,14 @@ personParser =
 
 -- Did you repeat yourself in `personParser` ? This might help:
 
-(>>=~) ::
-  Parser a
-  -> (a -> Parser b)
-  -> Parser b
-(>>=~) p f =
-  (p <* spaces1) >>= f
+(>>=~) :: Parser a -> (a -> Parser b) -> Parser b
+(>>=~) p f = (p <* spaces1) >>= f
 
 infixl 1 >>=~
 
 -- or maybe this
 
-(<*>~) ::
-  Parser (a -> b)
-  -> Parser a
-  -> Parser b
-(<*>~) f a =
-  f <*> spaces1 *> a
+(<*>~) :: Parser (a -> b) -> Parser a -> Parser b
+(<*>~) f a = f <*> spaces1 *> a
 
 infixl 4 <*>~
