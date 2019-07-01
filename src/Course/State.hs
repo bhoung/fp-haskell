@@ -96,7 +96,8 @@ instance Applicative (State s) where
 -- ((),16)
 instance Monad (State s) where
   (=<<) :: (a -> State s b) -> State s a -> State s b
-  (=<<) f (State k) = State (\s -> let (a, s') = k s in runState (f a) s')
+  (=<<) f (State k) = State (\s -> let (a, s') = k s in 
+                                   runState (f a) s')
 
 -- | Find the first element in a `List` that satisfies a given predicate.
 -- It is possible that no element is found, hence an `Optional` result.
