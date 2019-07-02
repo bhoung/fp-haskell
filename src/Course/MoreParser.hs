@@ -163,7 +163,7 @@ oneof ks = satisfy (\k -> elem k ks)
 -- >>> isErrorResult (parse (noneof "abcd") "abc")
 -- True
 noneof :: Chars -> Parser Char
-noneof = error "todo: Course.MoreParser#noneof"
+noneof ks = satisfy (\k -> notElem k ks)
 
 -- | Write a function that applies the first parser, runs the third parser keeping the result,
 -- then runs the second parser and produces the obtained result.
@@ -182,7 +182,17 @@ noneof = error "todo: Course.MoreParser#noneof"
 -- >>> isErrorResult (parse (between (is '[') (is ']') character) "abc]")
 -- True
 between :: Parser o -> Parser c -> Parser a -> Parser a
-between = error "todo: Course.MoreParser#between"
+between po pc pa = po >> 
+                   pa >>= \a ->
+                   pc >>
+                   pure a  
+{--
+between po pc pa = do 
+        o <- po
+        a <- pa
+        c <- pc
+        (pure a)
+--}
 
 -- | Write a function that applies the given parser in between the two given characters.
 --
@@ -200,7 +210,7 @@ between = error "todo: Course.MoreParser#between"
 -- >>> isErrorResult (parse (betweenCharTok '[' ']' character) "abc]")
 -- True
 betweenCharTok :: Char -> Char -> Parser a -> Parser a
-betweenCharTok = error "todo: Course.MoreParser#betweenCharTok"
+betweenCharTok c1 c2 pa= between (charTok c1) (charTok c2) pa
 
 -- | Write a function that parses 4 hex digits and return the character value.
 --
@@ -217,10 +227,15 @@ betweenCharTok = error "todo: Course.MoreParser#betweenCharTok"
 --
 -- >>> isErrorResult (parse hex "0axf")
 -- True
-hex ::
-  Parser Char
-hex =
-  error "todo: Course.MoreParser#hex"
+hex :: Parser Char
+hex = error ""
+
+-- https://www.rapidtables.com/convert/number/hex-to-ascii.html
+--
+-- hex = satisfy isHexDigit >>= \c -> ((readHex c) :.Nil)
+{--replicateA 4 (satisfy isHexDigit) >>= (\c ->
+      readHex c >>= \h ->
+      _todo )--}
 
 -- | Write a function that parses the character 'u' followed by 4 hex digits and return the character value.
 --
@@ -240,10 +255,8 @@ hex =
 --
 -- >>> isErrorResult (parse hexu "u0axf")
 -- True
-hexu ::
-  Parser Char
-hexu =
-  error "todo: Course.MoreParser#hexu"
+hexu :: Parser Char
+hexu = error "todo: Course.MoreParser#hexu"
 
 -- | Write a function that produces a non-empty list of values coming off the given parser (which must succeed at least once),
 -- separated by the second given parser.
@@ -261,13 +274,14 @@ hexu =
 --
 -- >>> isErrorResult (parse (sepby1 character (is ',')) "")
 -- True
-sepby1 ::
-  Parser a
-  -> Parser s
-  -> Parser (List a)
-sepby1 =
-  error "todo: Course.MoreParser#sepby1"
+sepby1 :: Parser a -> Parser s -> Parser (List a)
+sepby1 pa ps = let p pa ps = do 
+                       a <- pa
+                       s <- ps 
+                       pure (a) in list (p pa ps)
 
+-- misses case without sep at end
+--
 -- | Write a function that produces a list of values coming off the given parser,
 -- separated by the second given parser.
 --
