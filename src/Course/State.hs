@@ -26,6 +26,10 @@ import qualified Data.Set as S
 -- A `State` is a function from a state value `s` to (a produced value `a`, and a resulting state `s`).
 newtype State s a = State { runState :: s -> (a, s) } 
 
+-- runState is used to deconstruct State
+-- State is a Constructor
+--
+--
 --instance Show State where
 --   show (a,s) = "(" ++ (show a) ++ "," ++ (show s) ++ ")"
 
@@ -114,9 +118,18 @@ instance Monad (State s) where
 -- >>> let p x = (\s -> (const $ pure (x == 'i')) =<< put (1+s)) =<< get in runState (findM p $ listh ['a'..'h']) 0
 -- (Empty,8)
 findM :: Monad f => (a -> f Bool) -> List a -> f (Optional a)
---findM f xs = foldRight (\a o -> let f' b = f a in (if b then f' a else o)) Empty xs
-findM = error ""
+findM p = foldRight (\a foa -> let pa = p a in 
+                               lift2 (\b oa -> if b then Full a else oa) 
+                               pa foa) 
+                    (pure Empty)
+-- lift2 ignores the f, applying a->b->c to f a and f b
+-- other thing is that foa (the rest of the list) has type f Optional a
 
+{--findM f xs = foldRight (\a o -> let f' b = f a in
+                                if b 
+                                then pure (Full a)
+                                else o) (pure Empty) xs
+--}
 
 -- | Find the first element in a `List` that repeats.
 -- It is possible that no element repeats, hence an `Optional` result.
