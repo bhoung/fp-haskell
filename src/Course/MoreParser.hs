@@ -228,8 +228,19 @@ betweenCharTok c1 c2 pa= between (charTok c1) (charTok c2) pa
 -- >>> isErrorResult (parse hex "0axf")
 -- True
 hex :: Parser Char
-hex = error ""
+--hex = error ""
+hex = replicateA 4 (satisfy isHexDigit) >>= \c ->
+      case readHex c of
+        Empty -> return $ chr 0
+        Full n -> return $ chr n 
 
+{--
+hex =
+  let hInt s = case readHex s of
+                 Empty -> 0
+                 Full n -> n
+  in chr . hInt <$> replicateA 4 (satisfy isHexDigit) 
+--}
 -- https://www.rapidtables.com/convert/number/hex-to-ascii.html
 --
 -- hex = satisfy isHexDigit >>= \c -> ((readHex c) :.Nil)
@@ -275,12 +286,18 @@ hexu = error "todo: Course.MoreParser#hexu"
 -- >>> isErrorResult (parse (sepby1 character (is ',')) "")
 -- True
 sepby1 :: Parser a -> Parser s -> Parser (List a)
+sepby1 pa ps = do
+               a <- pa
+               w <- list (ps *> pa)
+               return (a:.w)
+                    
+{--
 sepby1 pa ps = let p pa ps = do 
                        a <- pa
                        s <- ps 
                        pure (a) in list (p pa ps)
-
--- misses case without sep at end
+--}
+-- BH:misses case without sep at end
 --
 -- | Write a function that produces a list of values coming off the given parser,
 -- separated by the second given parser.
@@ -298,12 +315,8 @@ sepby1 pa ps = let p pa ps = do
 --
 -- >>> parse (sepby character (is ',')) "a,b,c,,def"
 -- Result >def< "abc,"
-sepby ::
-  Parser a
-  -> Parser s
-  -> Parser (List a)
-sepby =
-  error "todo: Course.MoreParser#sepby"
+sepby :: Parser a -> Parser s -> Parser (List a)
+sepby pa ps = (sepby1 pa ps)
 
 -- | Write a parser that asserts that there is no remaining input.
 --
@@ -312,10 +325,11 @@ sepby =
 --
 -- >>> isErrorResult (parse eof "abc")
 -- True
-eof ::
-  Parser ()
-eof =
-  error "todo: Course.MoreParser#eof"
+eof :: Parser ()
+eof = error ""
+-- P (\input -> if isEr ishhh
+--satisfy (is "") >> return ()
+     
 
 -- | Write a parser that produces a character that satisfies all of the given predicates.
 --
