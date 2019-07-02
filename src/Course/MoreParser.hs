@@ -267,7 +267,8 @@ hex =
 -- >>> isErrorResult (parse hexu "u0axf")
 -- True
 hexu :: Parser Char
-hexu = error "todo: Course.MoreParser#hexu"
+hexu = is 'u' >> hex 
+-- >>= \h -> pure h
 
 -- | Write a function that produces a non-empty list of values coming off the given parser (which must succeed at least once),
 -- separated by the second given parser.
@@ -316,7 +317,7 @@ sepby1 pa ps = let p pa ps = do
 -- >>> parse (sepby character (is ',')) "a,b,c,,def"
 -- Result >def< "abc,"
 sepby :: Parser a -> Parser s -> Parser (List a)
-sepby pa ps = (sepby1 pa ps)
+sepby pa ps = sepby1 pa ps ||| pure Nil
 
 -- | Write a parser that asserts that there is no remaining input.
 --
@@ -326,9 +327,9 @@ sepby pa ps = (sepby1 pa ps)
 -- >>> isErrorResult (parse eof "abc")
 -- True
 eof :: Parser ()
-eof = error ""
--- P (\input -> if isEr ishhh
---satisfy (is "") >> return ()
+eof = P (\input -> case input of 
+                     Nil -> Result Nil ()
+                     input -> ExpectedEof input)
      
 
 -- | Write a parser that produces a character that satisfies all of the given predicates.
@@ -349,11 +350,11 @@ eof = error ""
 --
 -- >>> isErrorResult (parse (satisfyAll (isUpper :. (/= 'X') :. Nil)) "abc")
 -- True
-satisfyAll ::
-  List (Char -> Bool)
-  -> Parser Char
-satisfyAll =
-  error "todo: Course.MoreParser#satisfyAll"
+satisfyAll :: List (Char -> Bool) -> Parser Char
+satisfyAll ps = satisfy (and <$> sequence ps)
+
+
+--let P x = and <$> sequence ps in if x then _todo1 else _todo2
 
 -- | Write a parser that produces a character that satisfies any of the given predicates.
 --
@@ -370,11 +371,8 @@ satisfyAll =
 --
 -- >>> isErrorResult (parse (satisfyAny (isLower :. (/= 'X') :. Nil)) "")
 -- True
-satisfyAny ::
-  List (Char -> Bool)
-  -> Parser Char
-satisfyAny =
-  error "todo: Course.MoreParser#satisfyAny"
+satisfyAny :: List (Char -> Bool) -> Parser Char
+satisfyAny ps = satisfy (or <$> sequence ps)
 
 -- | Write a parser that parses between the two given characters, separated by a comma character ','.
 --
@@ -397,10 +395,5 @@ satisfyAny =
 --
 -- >>> isErrorResult (parse (betweenSepbyComma '[' ']' lower) "a]")
 -- True
-betweenSepbyComma ::
-  Char
-  -> Char
-  -> Parser a
-  -> Parser (List a)
-betweenSepbyComma =
-  error "todo: Course.MoreParser#betweenSepbyComma"
+betweenSepbyComma :: Char -> Char -> Parser a -> Parser (List a)
+betweenSepbyComma c1 c2 pa = (betweenCharTok c1 c2) $ (sepby pa (charTok ','))
