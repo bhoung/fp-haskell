@@ -74,26 +74,16 @@ The data structures given are:
 
 -}
 
-data Id a =
-  Id a
+data Id a = Id a
   deriving (Eq, Show)
 
-bindId ::
-  (a -> Id b)
-  -> Id a
-  -> Id b
-bindId f (Id a) =
-  f a
+bindId :: (a -> Id b) -> Id a -> Id b
+bindId f (Id a) = f a
 
-pureId ::
-  a
-  -> Id a
-pureId =
-  Id
+pureId :: a -> Id a
+pureId = Id
 
-sequenceId ::
-  [Id a]
-  -> Id [a]
+sequenceId :: [Id a] -> Id [a]
 sequenceId =
   foldr (\a as ->
     bindId (\a' ->
@@ -441,11 +431,6 @@ sequenceIO =
 ----
 
 class BindAndPure f where
-  bind ::
-    (a -> f b)
-    -> f a
-    -> f b
-  pure ::
-    a
-    -> f a
+  bind :: (a -> f b) -> f a -> f b
+  pure :: a -> f a
     

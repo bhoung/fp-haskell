@@ -31,7 +31,9 @@ import qualified Numeric as N
 -- BEGIN Helper functions and data types
 
 -- The custom list type
-data List t = Nil | t :. List t deriving (Eq, Ord)
+data List t = Nil | 
+          t :. List t 
+          deriving (Eq, Ord)
 
 -- Right-associative
 infixr 5 :.
