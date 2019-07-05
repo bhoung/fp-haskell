@@ -155,8 +155,12 @@ firstRepeat xs = let f a = State (\s -> (S.member a s, S.insert a s)) in
 --
 -- prop> \xs -> distinct xs == distinct (flatMap (\x -> x :. x :. Nil) xs)
 distinct :: Ord a => List a -> List a
-distinct xs = let f a = State (\s -> (S.notMember a s, S.insert a s)) in 
+--distinct xs = let f a = State (\s -> (S.notMember a s, S.insert a s)) in 
+                   --eval (filtering f xs) S.empty
+
+distinct xs = let f = (\a -> State (\s -> (S.notMember a s, S.insert a s))) in 
                    eval (filtering f xs) S.empty
+
 -- | A happy number is a positive integer, where the sum of the square of its digits eventually reaches 1 after repetition.
 -- In contrast, a sad number (not a happy number) is where the sum of the square of its digits never reaches 1
 -- because it results in a recurring sequence.
@@ -178,5 +182,43 @@ distinct xs = let f a = State (\s -> (S.notMember a s, S.insert a s)) in
 --
 -- >>> isHappy 44
 -- True
+--isHappy :: Integer -> Bool
+--
+
+h1 :: Integer -> List Char 
+h1 = show' 
+
+-- convert to list of ints
+h2 :: Integer -> List Int
+h2 = map digitToInt . show' 
+
+-- convert to list of ints squared
+h3 :: Integer -> List Int
+h3 = map (join (*)) . h2 
+
+-- combine h3 and h2
+helper :: Integer -> List Int
+helper = map (join (*) . digitToInt) . show'
+
+-- make list of ints squared into a sum function returning an Integer
+helper2 :: Integer -> Integer
+helper2 = toInteger . sum  . helper
+
+-- produce over helper2, get first repitition (in Optional), ask if contains 1
 isHappy :: Integer -> Bool
-isHappy = error "todo: Course.State#isHappy"
+isHappy = contains 1 . firstRepeat . produce helper2
+
+-- take 1 $ produce (\a -> a) 3
+
+-- Monad ((->) t)
+-- join :: Monad f => f (f a) -> f a
+-- join :: (t -> t -> a) -> t -> a
+-- join takes function with two args i.e. f(t,t)
+-- join f t = f t t
+--
+-- square n = n * n
+-- square n = (*) n n
+-- square n = join (*) n
+-- join (*) n = (*) n n
+-- square = join (*)
+--
