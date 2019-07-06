@@ -31,8 +31,7 @@ newtype StateT s f a = StateT { runStateT :: s -> f (a, s) }
 -- [(3,0)]
 instance Functor f => Functor (StateT s f) where
   (<$>) :: (a -> b) -> StateT s f a -> StateT s f b
-  (<$>) f' (StateT sfa) = StateT (\s -> 
-                                   (\(a,b) -> (f' a, b)) <$> (sfa s))
+  (<$>) f' (StateT sfa) = StateT (\s -> (\(a,b) -> (f' a, b)) <$> (sfa s))
 
   --StateT f (\s -> (f' a, s)) 
   --in runStateT s
@@ -74,16 +73,16 @@ instance Monad f => Applicative (StateT s f) where
 -- >>> let modify f = StateT (\s -> pure ((), f s)) in runStateT (modify (+1) >>= \() -> modify (*2)) 7
 -- ((),16)
 instance Monad f => Monad (StateT s f) where
-  (=<<) ::
-    (a -> StateT s f b)
-    -> StateT s f a
-    -> StateT s f b
-  (=<<) =
-    error "todo: Course.StateT (=<<)#instance (StateT s f)"
+  (=<<) :: (a -> StateT s f b) -> StateT s f a -> StateT s f b
+  (=<<) fsfb (StateT sfa) = StateT (\s -> sfa s >>= \(a, s') ->
+                                          runStateT (fsfb a) s')
+                                          
+-- getting stuck due to writing (StateT fsfb) to represent (a -> StateT s f b)
+-- but actually not a StateT, so use RunState
+-- also have to 'unwrap' StateT sfa first before using fsfb
 
 -- | A `State'` is `StateT` specialised to the `ExactlyOne` functor.
-type State' s a =
-  StateT s ExactlyOne a
+type State' s a = StateT s ExactlyOne a
 
 -- | Provide a constructor for `State'` values
 --
