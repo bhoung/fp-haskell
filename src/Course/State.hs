@@ -38,21 +38,22 @@ newtype State s a = State { runState :: s -> (a, s) }
 --
 -- prop> \(Fun _ f) s -> exec (State f) s == snd (runState (State f) s)
 exec :: State s a -> s -> s
-exec state s = snd $ runState state s
-
+--exec state s = snd $ runState state s
+exec (State sa) s = snd $ sa s
 
 -- | Run the `State` seeded with `s` and retrieve the resulting value.
 --
 -- prop> \(Fun _ f) s -> eval (State f) s == fst (runState (State f) s)
 eval :: State s a -> s -> a
-eval state s = fst $ runState state s
+--eval state s = fst $ runState state s
+eval (State sa) s = (\(a,_) -> a) $ sa s 
 
 -- | A `State` where the state also distributes into the produced value.
 --
 -- >>> runState get 0
 -- (0,0)
 get :: State s s
-get = State (\s -> (s,s))
+get = State (\s -> (s, s))
 
 -- | A `State` where the resulting state is seeded with the given value.
 --
@@ -67,10 +68,9 @@ put s = State (\_ -> ((), s))
 -- (10,6)
 instance Functor (State s) where
   (<$>) :: (a -> b) -> State s a -> State s b
-  f <$> State k = State (\s -> let (a, t) = k s 
-                               in (f a, t))
-  --(<$>) f (State sa) = (\(a,s) -> State (f a, s)) sa
-  --f (<$>) State k = let (a, s) = State k in State (f a, s)
+  f <$> State sa = State (\s -> 
+                     let (a, t) = sa s in
+                         (f a, t))
 
 -- | Implement the `Applicative` instance for `State s`.
 --
