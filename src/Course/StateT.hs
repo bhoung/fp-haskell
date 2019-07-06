@@ -31,10 +31,8 @@ newtype StateT s f a = StateT { runStateT :: s -> f (a, s) }
 -- [(3,0)]
 instance Functor f => Functor (StateT s f) where
   (<$>) :: (a -> b) -> StateT s f a -> StateT s f b
-  (<$>) = error ""
-
-  --(<$>) f' StateT k f = StateT f (\s -> let (a, t) = k s in
-  --                                  (f a, t)) 
+  (<$>) f' (StateT sfa) = StateT (\s -> 
+                                   (\(a,b) -> (f' a, b)) <$> (sfa s))
 
   --StateT f (\s -> (f' a, s)) 
   --in runStateT s

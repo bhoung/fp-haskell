@@ -12,7 +12,11 @@ getFile2 name = do
   pure (name, contents)
   
 -- yes
-
+-- a -> f (a, b)
+-- a -> b -> c -> f a -> f b -> f c
+-- a -> b -> f (a, b) 
+-- (,)
+-- Functor f => (a -> b) -> f a -> f b
 getFile3 :: FilePath -> IO (FilePath, Chars)
 getFile3 = 
   lift2 (<$>) (,) readFile
