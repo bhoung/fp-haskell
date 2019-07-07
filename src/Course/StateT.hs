@@ -140,7 +140,19 @@ putT s' = StateT (\_ -> pure ((), s'))
 --
 -- prop> \xs -> distinct' xs == distinct' (flatMap (\x -> x :. x :. Nil) xs)
 distinct' :: (Ord a, Num a) => List a -> List a
-distinct' = error "todo: Course.StateT#distinct'"
+distinct' xs = eval (filtering f xs) S.empty
+              where f = (\a -> 
+                            State (\s -> 
+                                (S.notMember a s, S.insert a s)))
+
+{--
+distinct' xs = let f' x = State (\s -> (if S.member x s  
+                                        then S.insert x s 
+                                        else _)) in filtering (f xs S.empty)
+distinct' xs = let f = filtering f xs in _todo
+--}
+--
+-- filtering :: Applicative f => (a -> f Bool) -> List a -> f (List a)
 
 -- | Remove all duplicate elements in a `List`.
 -- However, if you see a value greater than `100` in the list,
@@ -154,7 +166,10 @@ distinct' = error "todo: Course.StateT#distinct'"
 -- >>> distinctF $ listh [1,2,3,2,1,101]
 -- Empty
 distinctF :: (Ord a, Num a) => List a -> Optional (List a)
-distinctF = error "todo: Course.StateT#distinctF"
+distinctF xs = evalT (filtering f xs) S.empty
+               where f = (\a -> 
+                           StateT (\s -> 
+                             (Full (S.notMember a s, S.insert a s))))
 
 -- | An `OptionalT` is a functor of an `Optional` value.
 data OptionalT f a = OptionalT { runOptionalT :: f (Optional a) }
@@ -164,7 +179,8 @@ data OptionalT f a = OptionalT { runOptionalT :: f (Optional a) }
 -- >>> runOptionalT $ (+1) <$> OptionalT (Full 1 :. Empty :. Nil)
 -- [Full 2,Empty]
 instance Functor f => Functor (OptionalT f) where
-  (<$>) = error "todo: Course.StateT (<$>)#instance (OptionalT f)"
+  (<$>) :: (a -> b) -> OptionalT f a -> OptionalT f b
+  (<$>) f' ota = OptionalT (applyOptional (Full f') <$> runOptionalT ota)
 
 -- | Implement the `Applicative` instance for `OptionalT f` given a Applicative f.
 --
