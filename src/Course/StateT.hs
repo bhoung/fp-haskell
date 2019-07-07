@@ -96,30 +96,33 @@ state' sas = StateT (\s -> ExactlyOne (sas s))
 -- >>> runState' (state' $ runState $ put 1) 0
 -- ((),1)
 runState' :: State' s a -> s -> (a, s)
-runState' = error "todo: Course.StateT#runState'"
+runState' (StateT sa) s = runExactlyOne (sa s)
 
 -- | Run the `StateT` seeded with `s` and retrieve the resulting state.
 execT :: Functor f => StateT s f a -> s -> f s
-execT = error "todo: Course.StateT#execT"
+execT (StateT sa) s = snd <$> (sa s)
 
 -- | Run the `State` seeded with `s` and retrieve the resulting state.
 exec' :: State' s a -> s -> s
-exec' = error "todo: Course.StateT#exec'"
+exec' (StateT sa') s = snd $ runExactlyOne (sa' s)
+
+-- OR: exec' (StateT sa') s = runExactlyOne $ snd <$> (sa' s)
+
 
 -- | Run the `StateT` seeded with `s` and retrieve the resulting value.
 evalT :: Functor f => StateT s f a -> s -> f a
-evalT = error "todo: Course.StateT#evalT"
+evalT (StateT sa') s = fst <$> (sa' s)
 
 -- | Run the `State` seeded with `s` and retrieve the resulting value.
 eval' :: State' s a -> s -> a
-eval' = error "todo: Course.StateT#eval'"
+eval' (StateT sa') s = runExactlyOne $ fst <$> (sa' s)
 
 -- | A `StateT` where the state also distributes into the produced value.
 --
 -- >>> (runStateT (getT :: StateT Int List Int) 3)
 -- [(3,3)]
 getT :: Applicative f => StateT s f s
-getT = error "todo: Course.StateT#getT"
+getT = StateT (\s -> pure (s, s))
 
 -- | A `StateT` where the resulting state is seeded with the given value.
 --
@@ -129,7 +132,7 @@ getT = error "todo: Course.StateT#getT"
 -- >>> runStateT (putT 2 :: StateT Int List ()) 0
 -- [((),2)]
 putT :: Applicative f => s -> StateT s f ()
-putT = error "todo: Course.StateT#putT"
+putT s' = StateT (\_ -> pure ((), s'))
 
 -- | Remove all duplicate elements in a `List`.
 --
