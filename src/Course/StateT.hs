@@ -193,7 +193,7 @@ instance Applicative f => Applicative (OptionalT f) where
   (<*>) :: OptionalT f (a -> b) -> OptionalT f a -> OptionalT f b
   (<*>) ota otb = OptionalT (let x = runOptionalT ota
                                  y = runOptionalT otb
-                                 in (applyOptional <$>  x) <*> y )
+                                 in (applyOptional <$> x) <*> y )
                                 
 
 -- | Implement the `Monad` instance for `OptionalT f` given a Monad f.
@@ -203,19 +203,14 @@ instance Applicative f => Applicative (OptionalT f) where
 -- a -> OptionalT [f(a+1)] -> OptionalT [f(optional)]
 instance Monad f => Monad (OptionalT f) where
   (=<<) :: (a -> OptionalT f b) -> OptionalT f a -> OptionalT f b
-  --(=<<) = error ""
-  (=<<) fotb ota = OptionalT (let afoa = \a -> (runOptionalT (fotb a))
-                                  foa = runOptionalT ota  
-                                  oa = foa >>= \oa -> oa
-                                  in _todo)
-                                  --z = ((??) Full 1) <$> foa
-                                  --y = x >>= \a -> a
-                                  --x = afoa <$> y >>= \fob -> fob
-                                  --in (afoa z) >>= \fob -> fob)
-                                  --in (bindOptional x) <$> foa)
-                              --in bindOptional afoa oa)
---}
+  (=<<) fotb (OptionalT ota) = let g (Full x) = runOptionalT (fotb x)
+                                   g (Empty) = pure Empty
+                               in OptionalT (ota >>= g)
 
+--                             
+-- (=<<) fotb (OptionalT ota) = ota >>= _todo
+-- todo has type Optional a -> f (Optional b)
+--
 -- | A `Logger` is a pair of a list of log values (`[l]`) and an arbitrary value (`a`).
 data Logger l a = Logger (List l) a
   deriving (Eq, Show)
