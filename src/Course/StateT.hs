@@ -266,8 +266,20 @@ log1 l a = Logger (l :. Nil) a
 -- >>> distinctG $ listh [1,2,3,2,6,106]
 -- Logger ["even number: 2","even number: 2","even number: 6","aborting > 100: 106"] Empty
 distinctG :: (Integral a, Show a) => List a -> Logger Chars (Optional (List a))
-distinctG = error ""
---distinctG xs = filtering _todo
+distinctG f xs = let f = (\a -> 
+                           (StateT (\s -> 
+                              runOptionalT OptionalT (
+                                     Logger ("a":.Nil) Full (a, s))
+                              )
+                           )
+                         )
+                 in runOptionalT (evalT (filtering f xs) S.empty)
+--distinctF :: (Ord a, Num a) => List a -> Optional (List a)
+--distinctF xs = evalT (filtering f xs) S.empty
+--               where f = (\a -> 
+--                           StateT (\s -> 
+--                             (Full (S.notMember a s, S.insert a s))))
+----distinctG xs = filtering _todo
 --filtering a -> f Bool -> List a -> f (List a)
 --
 -- filtering StateT (\s -> (a,s))
