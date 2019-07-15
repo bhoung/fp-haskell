@@ -269,7 +269,7 @@ distinctG :: (Integral a, Show a) => List a -> Logger Chars (Optional (List a))
 
 distinctG xs = 
   runOptionalT (evalT (filtering (\a -> StateT (\s -> 
-    OptionalT (log1 (show' a) 
+    OptionalT (Logger (show' a :. Nil) 
                     (Full (a `S.notMember` s, a `S.insert` s))))) xs) S.empty)
   
 
